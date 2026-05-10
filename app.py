@@ -2,6 +2,20 @@ import streamlit as st
 import pandas as pd
 import urllib.parse
 
+# Función para crear un póster garantizado que no depende de internet (SVG en Data URI)
+def generar_afiche_seguro(titulo):
+    # Limita la longitud del título para que no desborde en el dibujo
+    titulo_corto = titulo[:25] + "..." if len(titulo) > 25 else titulo
+    svg = f"""
+    <svg xmlns="http://www.w3.org/2000/svg" width="300" height="450" viewBox="0 0 300 450">
+        <rect width="100%" height="100%" fill="#1f1f2e"/>
+        <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="22" font-weight="bold">{titulo_corto}</text>
+        <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="50">🎬</text>
+    </svg>
+    """
+    # Convierte el dibujo en una URL incrustable que nunca falla
+    return "data:image/svg+xml;charset=utf-8," + urllib.parse.quote(svg)
+
 # Configuración inicial de la página
 st.set_page_config(
     page_title="Buscador de Películas",
@@ -81,12 +95,9 @@ def cargar_datos():
         {"Título": "Los asesinos de la luna", "Año": 2023, "Director": "Martin Scorsese", "Calificación": 7.6, "Género": "Crimen/Drama"}
     ]
 
-    # Procesar automáticamente imágenes de las películas adicionales usando una API de Placeholders gráficos
+    # Procesar automáticamente imágenes de las películas adicionales usando una imagen generada internamente
     for p in filmografias_completas:
-        # Codificar el título para que sea válido en un enlace web (espacios, tildes, etc.)
-        texto_url = urllib.parse.quote(p["Título"])
-        # Genera un póster azul oscuro/grisáceo muy elegante con el título en el centro
-        p["URL_Afiche"] = f"https://placehold.co/300x450/1a1a24/ffffff/png?text={texto_url}"
+        p["URL_Afiche"] = generar_afiche_seguro(p["Título"])
         
     # Unir ambas listas
     todas_las_peliculas = peliculas_base + filmografias_completas
@@ -98,9 +109,8 @@ df = cargar_datos()
 # --- INTERFAZ DE USUARIO ---
 
 st.title("🎬 Buscador de Películas Mejor Calificadas")
-st.markdown("**¡Guía de bolsillo para Cinéfilos!** Encuentra las mejores películas filtrando por **Año** o por **Director**. Los resultados se mostrarán ordenados por su calificación.")
-st.divider()
-
+st.markdown("**¡Guía de bolsillo para Cinéfilos!** Encuentra las mejores películas filtrando por **Año** o por **Director** los resultados se mostrarán ordenados por su calificación.")
+st.divider(
 # --- CONTROLES DE BÚSQUEDA CENTRALES ---
 st.subheader("🔍 Opciones de Búsqueda")
 
@@ -205,13 +215,17 @@ if not resultados_ordenados.empty:
     """
     st.markdown(estilo_css, unsafe_allow_html=True)
     
+    # Mostrar cada película con su afiche y datos
     for _, fila in resultados_ordenados.iterrows():
         col_img, col_datos = st.columns([1, 4]) 
+        
+        # Generar un afiche de respaldo garantizado con el título por si el enlace original se rompe
+        afiche_respaldo = generar_afiche_seguro(fila["Título"])
         
         with col_img:
             st.markdown(f'''
                 <div class="contenedor-afiche">
-                    <img class="afiche-moderno" src="{fila["URL_Afiche"]}" alt="Afiche de {fila["Título"]}" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x450?text=Sin+Afiche';">
+                    <img class="afiche-moderno" src="{fila["URL_Afiche"]}" alt="Afiche de {fila["Título"]}" onerror="this.onerror=null; this.src='{afiche_respaldo}';">
                 </div>
             ''', unsafe_allow_html=True)
             
