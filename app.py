@@ -82,8 +82,7 @@ df = cargar_datos_reales()
 # --- INTERFAZ DE USUARIO ---
 
 st.title("🎬 Buscador de Películas (Conectado a IMDb)")
-st.markdown("**¡Guía de bolsillo para Cinéfilos!**
-Encuentra las mejores películas filtrando por **Año** o por **Director**.")
+st.markdown("**¡Guía de bolsillo para Cinéfilos!**Encuentra las mejores películas filtrando por **Año** o por **Director**.")
 st.divider()
 
 # Menú lateral para los filtros
