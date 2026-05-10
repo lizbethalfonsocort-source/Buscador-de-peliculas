@@ -83,7 +83,7 @@ df = cargar_datos()
 # --- INTERFAZ DE USUARIO ---
 
 st.title("🎬 Buscador de Películas Mejor Calificadas")
-st.markdown("Encuentra las mejores películas filtrando por **Año** o por **Director**. Los resultados se mostrarán ordenados por su calificación.")
+st.markdown("Esta es la guia de bolsillo para los cinefilos. Encuentra las mejores películas filtrando por **Año** o por **Director**. Los resultados se mostrarán ordenados por su calificación.")
 st.divider()
 
 # Menú lateral para los filtros
@@ -97,20 +97,40 @@ opcion_busqueda = st.sidebar.radio(
 if opcion_busqueda == "Por Año":
     # Obtener lista de años únicos ordenados de mayor a menor
     lista_anos = sorted(df["Año"].unique(), reverse=True)
-    ano_seleccionado = st.sidebar.selectbox("Selecciona un Año:", lista_anos)
+    # Cambiamos selectbox por multiselect para permitir múltiples selecciones
+    anos_seleccionados = st.sidebar.multiselect(
+        "Selecciona uno o más Años:", 
+        lista_anos, 
+        default=[1994, 2008] # Valores por defecto para mostrar algo al inicio
+    )
     
     # Filtrar el DataFrame
-    resultados = df[df["Año"] == ano_seleccionado]
-    criterio_mostrado = f"el año {ano_seleccionado}"
+    if anos_seleccionados:
+        resultados = df[df["Año"].isin(anos_seleccionados)]
+        criterio_mostrado = "los años seleccionados"
+    else:
+        # Si no hay ninguno seleccionado, mostramos todas las películas
+        resultados = df 
+        criterio_mostrado = "todos los años (sin filtro)"
 
 elif opcion_busqueda == "Por Director":
     # Obtener lista de directores únicos ordenados alfabéticamente
     lista_directores = sorted(df["Director"].unique())
-    director_seleccionado = st.sidebar.selectbox("Selecciona un Director:", lista_directores)
+    # Cambiamos selectbox por multiselect
+    directores_seleccionados = st.sidebar.multiselect(
+        "Selecciona uno o más Directores:", 
+        lista_directores, 
+        default=["Christopher Nolan", "Martin Scorsese"]
+    )
     
     # Filtrar el DataFrame
-    resultados = df[df["Director"] == director_seleccionado]
-    criterio_mostrado = f"el director {director_seleccionado}"
+    if directores_seleccionados:
+        resultados = df[df["Director"].isin(directores_seleccionados)]
+        criterio_mostrado = "los directores seleccionados"
+    else:
+        # Si no hay ninguno seleccionado, mostramos todas las películas
+        resultados = df
+        criterio_mostrado = "todos los directores (sin filtro)"
 
 # Ordenar los resultados por calificación de mayor a menor
 resultados_ordenados = resultados.sort_values(by="Calificación", ascending=False)
@@ -128,14 +148,35 @@ if not resultados_ordenados.empty:
     
     st.write("---")
     
+    # Definir CSS para el estilo artístico de las imágenes
+    estilo_css = """
+    <style>
+    .afiche-artistico {
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.4);
+        filter: sepia(50%) contrast(1.2) brightness(0.9);
+        border: 3px solid #f0f2f6;
+        transition: all 0.4s ease;
+    }
+    .afiche-artistico:hover {
+        transform: scale(1.05) rotate(2deg);
+        filter: sepia(0%) contrast(1.1) brightness(1.0);
+        box-shadow: 12px 12px 20px rgba(0, 0, 0, 0.6);
+        z-index: 10;
+    }
+    </style>
+    """
+    st.markdown(estilo_css, unsafe_allow_html=True)
+    
     # Mostrar cada película con su afiche y datos en una disposición limpia
     for _, fila in resultados_ordenados.iterrows():
         # Crear columnas para el diseño: una pequeña para la imagen, otra más grande para los datos
         col_img, col_datos = st.columns([1, 4]) 
         
         with col_img:
-            # Mostrar la imagen
-            st.image(fila["URL_Afiche"], use_container_width=True)
+            # Mostrar la imagen usando HTML personalizado para aplicar el CSS artístico
+            st.markdown(f'<img class="afiche-artistico" src="{fila["URL_Afiche"]}" alt="Afiche de {fila["Título"]}">', unsafe_allow_html=True)
             
         with col_datos:
             # Mostrar los datos en texto
