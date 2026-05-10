@@ -91,58 +91,60 @@ df = cargar_datos()
 # --- INTERFAZ DE USUARIO ---
 
 st.title("🎬 Buscador de Películas Mejor Calificadas")
-st.markdown("**¡Guía de bolsillo para cinéfilos!. Encuentra las mejores películas filtrando por **Año** o por **Director**, los resultados se mostrarán ordenados por su calificación.")
+st.markdown("**¡Guía de bolsillo para Cinéfilos!**. Encuentra las mejores películas filtrando por **Año** o por **Director**. Los resultados se mostrarán ordenados por su calificación y la vista se adapta a tu pantalla.")
 st.divider()
 
-# Menú lateral para los filtros
-st.sidebar.header("🔍 Opciones de Búsqueda")
-opcion_busqueda = st.sidebar.radio(
-    "¿Cómo deseas buscar?",
-    ("Por Año", "Por Director")
-)
+# --- CONTROLES DE BÚSQUEDA CENTRALES ---
+st.subheader("🔍 Opciones de Búsqueda")
 
-# Lógica de filtrado basada en la selección
-if opcion_busqueda == "Por Año":
-    # Obtener lista de años únicos ordenados de mayor a menor
-    lista_anos = sorted(df["Año"].dropna().unique(), reverse=True)
-    
-    # Manejar los valores por defecto (mostramos los más recientes)
-    valores_defecto_ano = lista_anos[:2] if len(lista_anos) >= 2 else []
-    
-    anos_seleccionados = st.sidebar.multiselect(
-        "Selecciona uno o más Años:", 
-        lista_anos, 
-        default=valores_defecto_ano
-    )
-    
-    # Filtrar el DataFrame
-    if anos_seleccionados:
-        resultados = df[df["Año"].isin(anos_seleccionados)]
-        criterio_mostrado = "los años seleccionados"
-    else:
-        resultados = df 
-        criterio_mostrado = "todos los años (sin filtro)"
+# Usamos columnas para darle un mejor aspecto al buscador en el centro
+col_radio, col_filtro = st.columns([1, 3])
 
-elif opcion_busqueda == "Por Director":
-    # Obtener lista de directores únicos ordenados alfabéticamente
-    lista_directores = sorted(df["Director"].dropna().astype(str).unique())
-    
-    # Valores por defecto para directores famosos recientes
-    directores_defecto = [d for d in ["Christopher Nolan", "Denis Villeneuve"] if d in lista_directores]
-    
-    directores_seleccionados = st.sidebar.multiselect(
-        "Selecciona uno o más Directores:", 
-        lista_directores, 
-        default=directores_defecto
+with col_radio:
+    opcion_busqueda = st.radio(
+        "¿Cómo deseas buscar?",
+        ("Por Año", "Por Director")
     )
+
+with col_filtro:
+    # Lógica de filtrado basada en la selección (sin selecciones por defecto)
+    if opcion_busqueda == "Por Año":
+        # Obtener lista de años únicos ordenados de mayor a menor
+        lista_anos = sorted(df["Año"].dropna().unique(), reverse=True)
+        
+        anos_seleccionados = st.multiselect(
+            "Selecciona uno o más Años:", 
+            lista_anos, 
+            default=[] # Ningún año seleccionado al iniciar
+        )
+        
+        # Filtrar el DataFrame
+        if anos_seleccionados:
+            resultados = df[df["Año"].isin(anos_seleccionados)]
+            criterio_mostrado = "los años seleccionados"
+        else:
+            resultados = df 
+            criterio_mostrado = "todos los años (sin filtro)"
     
-    # Filtrar el DataFrame
-    if directores_seleccionados:
-        resultados = df[df["Director"].isin(directores_seleccionados)]
-        criterio_mostrado = "los directores seleccionados"
-    else:
-        resultados = df
-        criterio_mostrado = "todos los directores (sin filtro)"
+    elif opcion_busqueda == "Por Director":
+        # Obtener lista de directores únicos ordenados alfabéticamente
+        lista_directores = sorted(df["Director"].dropna().astype(str).unique())
+        
+        directores_seleccionados = st.multiselect(
+            "Selecciona uno o más Directores:", 
+            lista_directores, 
+            default=[] # Ningún director seleccionado al iniciar
+        )
+        
+        # Filtrar el DataFrame
+        if directores_seleccionados:
+            resultados = df[df["Director"].isin(directores_seleccionados)]
+            criterio_mostrado = "los directores seleccionados"
+        else:
+            resultados = df
+            criterio_mostrado = "todos los directores (sin filtro)"
+
+st.divider()
 
 # Ordenar los resultados por calificación de mayor a menor
 resultados_ordenados = resultados.sort_values(by="Calificación", ascending=False)
@@ -236,4 +238,4 @@ else:
 
 # Nota al pie
 st.markdown("---")
-st.caption("Desarrollado por Lizcort asistido con IA")
+st.caption("Desarrollado por Lizcort asístido con IA.")
