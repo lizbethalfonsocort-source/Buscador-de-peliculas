@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from imdb import Cinemagoer
 
 # Configuración inicial de la página
 st.set_page_config(
@@ -8,98 +9,51 @@ st.set_page_config(
     layout="wide"
 )
 
-# Función para cargar los datos (usamos cache para no recargar en cada interacción)
-@st.cache_data
-def cargar_datos():
-    # Base de datos simulada ampliada (incluye películas hasta la actualidad)
-    datos = {
-        "Título": [
-            "Cadena Perpetua", "El Padrino", "El Padrino 2", "El Caballero Oscuro", 
-            "12 Hombres sin Piedad", "La Lista de Schindler", "El Señor de los Anillos: El Retorno del Rey", 
-            "Pulp Fiction", "El Bueno, el Feo y el Malo", "Forrest Gump",
-            "Matrix", "Origen", "El Señor de los Anillos: La Comunidad del Anillo", 
-            "Star Wars: Episodio V", "Interstellar", "Parásitos",
-            "Uno de los nuestros", "El lobo de Wall Street", "Seven",
-            "Oppenheimer", "Dune: Parte Dos", "Spider-Man: Cruzando el Multiverso",
-            "Top Gun: Maverick", "La Sociedad de la Nieve", "Todo a la vez en todas partes"
-        ],
-        "Año": [
-            1994, 1972, 1974, 2008, 
-            1957, 1993, 2003, 
-            1994, 1966, 1994,
-            1999, 2010, 2001, 
-            1980, 2014, 2019,
-            1990, 2013, 1995,
-            2023, 2024, 2023,
-            2022, 2023, 2022
-        ],
-        "Director": [
-            "Frank Darabont", "Francis Ford Coppola", "Francis Ford Coppola", "Christopher Nolan",
-            "Sidney Lumet", "Steven Spielberg", "Peter Jackson",
-            "Quentin Tarantino", "Sergio Leone", "Robert Zemeckis",
-            "Lana Wachowski, Lilly Wachowski", "Christopher Nolan", "Peter Jackson",
-            "Irvin Kershner", "Christopher Nolan", "Bong Joon Ho",
-            "Martin Scorsese", "Martin Scorsese", "David Fincher",
-            "Christopher Nolan", "Denis Villeneuve", "Joaquim Dos Santos",
-            "Joseph Kosinski", "J.A. Bayona", "Daniel Kwan, Daniel Scheinert"
-        ],
-        "Calificación": [
-            9.3, 9.2, 9.0, 9.0, 
-            9.0, 9.0, 9.0, 
-            8.9, 8.8, 8.8,
-            8.7, 8.8, 8.8, 
-            8.7, 8.6, 8.5,
-            8.7, 8.2, 8.6,
-            8.4, 8.6, 8.6,
-            8.3, 7.9, 7.8
-        ],
-        "Género": [
-            "Drama", "Crimen/Drama", "Crimen/Drama", "Acción/Crimen",
-            "Drama", "Biografía/Drama", "Aventura/Fantasía",
-            "Crimen/Drama", "Western", "Drama/Romance",
-            "Ciencia Ficción/Acción", "Ciencia Ficción/Acción", "Aventura/Fantasía",
-            "Ciencia Ficción/Aventura", "Ciencia Ficción/Drama", "Thriller/Comedia",
-            "Crimen/Drama", "Biografía/Comedia", "Crimen/Misterio",
-            "Biografía/Drama", "Ciencia Ficción/Aventura", "Animación/Acción",
-            "Acción/Drama", "Supervivencia/Drama", "Ciencia Ficción/Aventura"
-        ],
-        "URL_Afiche": [
-            "https://upload.wikimedia.org/wikipedia/en/8/81/ShawshankRedemptionMoviePoster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_vhs.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/0/03/Godfather_part_ii.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/1/1c/The_Dark_Knight_%282008_film%29.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/9/91/12_angry_men.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/3/38/Schindler%27s_List_movie.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/b/be/The_Lord_of_the_Rings_-_The_Return_of_the_King_%282003%29.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/4/45/Good_the_bad_and_the_ugly_poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/6/67/Forrest_Gump_poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/c/c1/The_Matrix_Poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/2/2e/Inception_%282010%29_theatrical_poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/8/8a/The_Lord_of_the_Rings_The_Fellowship_of_the_Ring_%282001%29.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/3/3f/The_Empire_Strikes_Back_%281980_movie_poster%29.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/b/bc/Interstellar_film_poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/5/53/Parasite_%282019_film%29.png",
-            "https://upload.wikimedia.org/wikipedia/en/7/7b/Goodfellas.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/d/d8/The_Wolf_of_Wall_Street_%282013%29.png",
-            "https://upload.wikimedia.org/wikipedia/en/6/68/Seven_%28movie%29_poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/4/4a/Oppenheimer_%28film%29.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/5/52/Dune_Part_Two_poster.jpeg",
-            "https://upload.wikimedia.org/wikipedia/en/b/b4/Spider-Man-_Across_the_Spider-Verse_poster.jpeg",
-            "https://upload.wikimedia.org/wikipedia/en/1/13/Top_Gun_Maverick_Poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/9/91/Society_of_the_Snow_poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/1/1e/Everything_Everywhere_All_at_Once.jpg"
-        ]
-    }
+# --- CARGA DE DATOS DESDE IMDb ---
+
+# Usamos cache para que la descarga desde internet solo ocurra la primera vez que se abre la app
+@st.cache_data(show_spinner="Descargando datos en vivo desde IMDb... 🍿 (Esto tomará unos segundos)")
+def cargar_datos_reales():
+    ia = Cinemagoer()
+    
+    # Obtenemos la lista de las 250 mejores películas y tomamos las primeras 50 para optimizar el tiempo de carga
+    top_movies = ia.get_top250_movies()[:50] 
+    
+    datos = []
+    
+    for movie in top_movies:
+        # Obtenemos la información detallada de cada película (necesario para directores y géneros)
+        ia.update(movie, info=['main'])
+        
+        # Extraer directores de forma segura (puede haber más de uno)
+        directores = [d.get('name') for d in movie.get('directors', [])]
+        director_str = ", ".join(directores) if directores else "Desconocido"
+        
+        # Extraer géneros
+        generos = movie.get('genres', [])
+        genero_str = "/".join(generos[:2]) if generos else "Desconocido"
+        
+        # Obtener la URL del afiche de mejor calidad disponible
+        url_afiche = movie.get('full-size cover url') or movie.get('cover url', 'https://via.placeholder.com/300x450?text=Sin+Afiche')
+        
+        datos.append({
+            "Título": movie.get('title'),
+            "Año": movie.get('year'),
+            "Director": director_str,
+            "Calificación": movie.get('rating'),
+            "Género": genero_str,
+            "URL_Afiche": url_afiche
+        })
+        
     return pd.DataFrame(datos)
 
-# Cargar los datos en un DataFrame de pandas
-df = cargar_datos()
+# Cargar los datos reales en el DataFrame
+df = cargar_datos_reales()
 
 # --- INTERFAZ DE USUARIO ---
 
-st.title("🎬 Buscador de Películas Mejor Calificadas")
-st.markdown("¡Guia de bolsillo para Cinefilos! Encuentra las mejores películas filtrando por **Año** o por **Director**. Los resultados se mostrarán ordenados por su calificación y la vista se adapta a tu pantalla.")
+st.title("🎬 Buscador de Películas (Conectado a IMDb)")
+st.markdown("Encuentra las mejores películas filtrando por **Año** o por **Director**. Estos datos son extraídos en tiempo real de la base de datos mundial de **IMDb**.")
 st.divider()
 
 # Menú lateral para los filtros
@@ -112,12 +66,15 @@ opcion_busqueda = st.sidebar.radio(
 # Lógica de filtrado basada en la selección
 if opcion_busqueda == "Por Año":
     # Obtener lista de años únicos ordenados de mayor a menor
-    lista_anos = sorted(df["Año"].unique(), reverse=True)
+    lista_anos = sorted(df["Año"].dropna().unique(), reverse=True)
+    
+    # Manejar los valores por defecto
+    valores_defecto_ano = [lista_anos[0]] if len(lista_anos) > 0 else []
     
     anos_seleccionados = st.sidebar.multiselect(
         "Selecciona uno o más Años:", 
         lista_anos, 
-        default=[lista_anos[0], 2023, 1994] # Muestra el año más reciente por defecto junto con otros
+        default=valores_defecto_ano
     )
     
     # Filtrar el DataFrame
@@ -130,12 +87,14 @@ if opcion_busqueda == "Por Año":
 
 elif opcion_busqueda == "Por Director":
     # Obtener lista de directores únicos ordenados alfabéticamente
-    lista_directores = sorted(df["Director"].unique())
+    lista_directores = sorted(df["Director"].dropna().astype(str).unique())
+    
+    valores_defecto_director = [lista_directores[0]] if len(lista_directores) > 0 else []
     
     directores_seleccionados = st.sidebar.multiselect(
         "Selecciona uno o más Directores:", 
         lista_directores, 
-        default=["Christopher Nolan", "Denis Villeneuve"]
+        default=valores_defecto_director
     )
     
     # Filtrar el DataFrame
@@ -162,42 +121,46 @@ if not resultados_ordenados.empty:
     
     st.write("---")
     
-    # CSS con Media Queries para hacer la app totalmente responsiva (Mobile-Friendly)
+    # CSS con Media Queries para un diseño moderno, limpio y elegante
     estilo_css = """
     <style>
     .contenedor-afiche {
         display: flex;
         justify-content: center;
         align-items: center;
+        padding: 10px;
     }
-    .afiche-artistico {
+    .afiche-moderno {
         width: 100%;
-        max-width: 280px;
-        border: 4px solid #000000; /* Borde negro grueso tipo cómic */
-        border-radius: 0px; /* Bordes cuadrados */
-        box-shadow: 12px 12px 0px #ff007f; /* Sombra sólida rosa neón típica del Pop Art */
-        filter: contrast(160%) saturate(250%); /* Colores súper saturados y alto contraste */
-        transition: all 0.3s ease-in-out;
+        max-width: 260px;
+        border-radius: 16px; /* Bordes redondeados suaves */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Sombra difuminada y elegante */
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
     }
-    .afiche-artistico:hover {
-        transform: translate(-5px, -5px); /* Movimiento diagonal */
-        box-shadow: 17px 17px 0px #00e5ff; /* La sombra cambia a cian neón al pasar el cursor */
-        filter: contrast(180%) saturate(300%) hue-rotate(15deg); /* Los colores vibran y cambian ligeramente */
+    .afiche-moderno:hover {
+        transform: translateY(-10px) scale(1.02); /* Efecto de elevación (flotar) suave */
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25); /* Sombra más profunda al flotar */
         z-index: 10;
+    }
+    
+    .contenedor-datos {
+        padding: 10px 20px;
     }
     
     /* Reglas para pantallas de teléfonos móviles */
     @media (max-width: 768px) {
-        .afiche-artistico {
-            max-width: 200px; /* Hace la imagen más pequeña en celulares */
-            box-shadow: 8px 8px 0px #ff007f; /* Sombras adaptadas a móvil */
-            margin-bottom: 15px; /* Da espacio entre la imagen y el texto */
+        .afiche-moderno {
+            max-width: 200px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            margin-bottom: 20px;
         }
-        .afiche-artistico:hover {
-            box-shadow: 12px 12px 0px #00e5ff;
+        .afiche-moderno:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
         .contenedor-datos {
-            text-align: center; /* Centra el texto en móviles */
+            text-align: center;
+            padding: 0;
         }
     }
     </style>
@@ -206,33 +169,32 @@ if not resultados_ordenados.empty:
     
     # Mostrar cada película con su afiche y datos
     for _, fila in resultados_ordenados.iterrows():
-        # Streamlit apila estas columnas automáticamente en pantallas pequeñas
         col_img, col_datos = st.columns([1, 4]) 
         
         with col_img:
-            # Envolvemos la imagen en un div para controlar su centrado responsivo
             st.markdown(f'''
                 <div class="contenedor-afiche">
-                    <img class="afiche-artistico" src="{fila["URL_Afiche"]}" alt="Afiche de {fila["Título"]}">
+                    <img class="afiche-moderno" src="{fila["URL_Afiche"]}" alt="Afiche de {fila["Título"]}">
                 </div>
             ''', unsafe_allow_html=True)
             
         with col_datos:
-            # Usamos un contenedor para poder aplicar alineación de texto en móviles
             st.markdown(f'''
                 <div class="contenedor-datos">
-                    <h3>{fila["Título"]}</h3>
-                    <p><strong>Año:</strong> {fila['Año']}<br>
-                    <strong>Director:</strong> {fila['Director']}<br>
-                    <strong>Calificación:</strong> ⭐ {fila['Calificación']}<br>
-                    <strong>Género:</strong> {fila['Género']}</p>
+                    <h3 style="margin-top: 0; font-weight: 600;">{fila["Título"]}</h3>
+                    <p style="color: #555; font-size: 1.05rem;">
+                        <strong>Año:</strong> {int(fila['Año'])}<br>
+                        <strong>Director:</strong> {fila['Director']}<br>
+                        <strong>Calificación:</strong> ⭐ {fila['Calificación']}<br>
+                        <strong>Género:</strong> {fila['Género']}
+                    </p>
                 </div>
             ''', unsafe_allow_html=True)
             
-        st.write("---") # Separador visual entre películas
+        st.write("---") 
 else:
     st.info("No se encontraron películas para los criterios seleccionados.")
 
 # Nota al pie
 st.markdown("---")
-st.caption("Desarrollado por Lizbeth Alfonso asistido con IA. Optimizado para web y móvil.")
+st.caption("Desarrollado por Lizbeth Alfonso asistido por IA.")
