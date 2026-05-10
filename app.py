@@ -52,6 +52,27 @@ def cargar_datos():
             "Ciencia Ficción/Acción", "Ciencia Ficción/Acción", "Aventura/Fantasía",
             "Ciencia Ficción/Aventura", "Ciencia Ficción/Drama", "Thriller/Comedia",
             "Crimen/Drama", "Biografía/Comedia", "Crimen/Misterio"
+        ],
+        "URL_Afiche": [
+            "https://upload.wikimedia.org/wikipedia/en/8/81/ShawshankRedemptionMoviePoster.jpg",
+            "https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_vhs.jpg",
+            "https://upload.wikimedia.org/wikipedia/en/0/03/Godfather_part_ii.jpg",
+            "https://upload.wikimedia.org/wikipedia/en/1/1c/The_Dark_Knight_%282008_film%29.jpg",
+            "https://upload.wikimedia.org/wikipedia/en/9/91/12_angry_men.jpg",
+            "https://upload.wikimedia.org/wikipedia/en/3/38/Schindler%27s_List_movie.jpg",
+            "https://upload.wikimedia.org/wikipedia/en/b/be/The_Lord_of_the_Rings_-_The_Return_of_the_King_%282003%29.jpg",
+            "https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg",
+            "https://upload.wikimedia.org/wikipedia/en/4/45/Good_the_bad_and_the_ugly_poster.jpg",
+            "https://upload.wikimedia.org/wikipedia/en/6/67/Forrest_Gump_poster.jpg",
+            "https://upload.wikimedia.org/wikipedia/en/c/c1/The_Matrix_Poster.jpg",
+            "https://upload.wikimedia.org/wikipedia/en/2/2e/Inception_%282010%29_theatrical_poster.jpg",
+            "https://upload.wikimedia.org/wikipedia/en/8/8a/The_Lord_of_the_Rings_The_Fellowship_of_the_Ring_%282001%29.jpg",
+            "https://upload.wikimedia.org/wikipedia/en/3/3f/The_Empire_Strikes_Back_%281980_movie_poster%29.jpg",
+            "https://upload.wikimedia.org/wikipedia/en/b/bc/Interstellar_film_poster.jpg",
+            "https://upload.wikimedia.org/wikipedia/en/5/53/Parasite_%282019_film%29.png",
+            "https://upload.wikimedia.org/wikipedia/en/7/7b/Goodfellas.jpg",
+            "https://upload.wikimedia.org/wikipedia/en/d/d8/The_Wolf_of_Wall_Street_%282013%29.png",
+            "https://upload.wikimedia.org/wikipedia/en/6/68/Seven_%28movie%29_poster.jpg"
         ]
     }
     return pd.DataFrame(datos)
@@ -105,15 +126,29 @@ if not resultados_ordenados.empty:
     col1.metric("Películas encontradas", len(resultados_ordenados))
     col2.metric("Calificación promedio", round(resultados_ordenados["Calificación"].mean(), 2))
     
-    # Mostrar la tabla de datos
-    st.dataframe(
-        resultados_ordenados,
-        use_container_width=True,
-        hide_index=True # Oculta el número de fila para una vista más limpia
-    )
+    st.write("---")
+    
+    # Mostrar cada película con su afiche y datos en una disposición limpia
+    for _, fila in resultados_ordenados.iterrows():
+        # Crear columnas para el diseño: una pequeña para la imagen, otra más grande para los datos
+        col_img, col_datos = st.columns([1, 4]) 
+        
+        with col_img:
+            # Mostrar la imagen
+            st.image(fila["URL_Afiche"], use_container_width=True)
+            
+        with col_datos:
+            # Mostrar los datos en texto
+            st.subheader(fila["Título"])
+            st.write(f"**Año:** {fila['Año']}")
+            st.write(f"**Director:** {fila['Director']}")
+            st.write(f"**Calificación:** ⭐ {fila['Calificación']}")
+            st.write(f"**Género:** {fila['Género']}")
+            
+        st.write("---") # Separador visual entre películas
 else:
     st.info("No se encontraron películas para los criterios seleccionados.")
 
 # Nota al pie
 st.markdown("---")
-st.caption("Desarrollado con ❤️ usando Streamlit y Pandas.")
+st.caption("Desarrollado por Lizbeth Alfonso asistido con IA.")
