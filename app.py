@@ -60,27 +60,27 @@ def cargar_datos():
             "Acción/Aventura", "Animación/Aventura", "Comedia/Drama"
         ],
         "URL_Afiche": [
-            "https://upload.wikimedia.org/wikipedia/en/8/81/ShawshankRedemptionMoviePoster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_vhs.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/1/1c/The_Dark_Knight_%282008_film%29.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/9/91/12_angry_men.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/b/be/The_Lord_of_the_Rings_-_The_Return_of_the_King_%282003%29.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/3/3b/Pulp_Fiction_%281994%29_poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/6/67/Forrest_Gump_poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/c/c1/The_Matrix_Poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/2/2e/Inception_%282010%29_theatrical_poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/b/bc/Interstellar_film_poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/5/53/Parasite_%282019_film%29.png",
-            "https://upload.wikimedia.org/wikipedia/en/d/d8/The_Wolf_of_Wall_Street_%282013%29.png",
-            "https://upload.wikimedia.org/wikipedia/en/4/4a/Oppenheimer_%28film%29.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/5/52/Dune_Part_Two_poster.jpeg",
-            "https://upload.wikimedia.org/wikipedia/en/b/b4/Spider-Man-_Across_the_Spider-Verse_poster.jpeg",
-            "https://upload.wikimedia.org/wikipedia/en/1/13/Top_Gun_Maverick_Poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/9/91/Society_of_the_Snow_poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/1/1e/Everything_Everywhere_All_at_Once.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/6/6c/Furiosa_A_Mad_Max_Saga_poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/f/f7/Inside_Out_2_poster.jpg",
-            "https://upload.wikimedia.org/wikipedia/en/b/b5/Poor_Things_poster.jpg"
+            "https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg",
+            "https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
+            "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+            "https://image.tmdb.org/t/p/w500/ow3wq89wM8qd5X7hWKxiRfsFf9C.jpg",
+            "https://image.tmdb.org/t/p/w500/rCzpDGLbOoPwLjy3OAm5OUcvAWM.jpg",
+            "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",
+            "https://image.tmdb.org/t/p/w500/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg",
+            "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",
+            "https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg",
+            "https://image.tmdb.org/t/p/w500/gEU2QlsUUHXjNpeVD8kU5N0U820.jpg",
+            "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+            "https://image.tmdb.org/t/p/w500/jTL2EaL10p7pEaX1X1PIfA2qV5A.jpg",
+            "https://image.tmdb.org/t/p/w500/ptpr0kGAckfQkJeJVNfau8S3jfl.jpg",
+            "https://image.tmdb.org/t/p/w500/1pdfLvkbY9ohJlCjQH2JGjjc91p.jpg",
+            "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
+            "https://image.tmdb.org/t/p/w500/62HCnUTziyWcpDaBO2i1DX17ljH.jpg",
+            "https://image.tmdb.org/t/p/w500/7zB1E4o56J11x6r9y0r0lqE4q8T.jpg",
+            "https://image.tmdb.org/t/p/w500/w3LxiVYdWWRvEVdn5RYq6jIqkb1.jpg",
+            "https://image.tmdb.org/t/p/w500/iADOJ8Zymht2JPMoy3R7xceZprc.jpg",
+            "https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzRxAcDseS1.jpg",
+            "https://image.tmdb.org/t/p/w500/kCGlIMHnOm8PhwovC18j9k6M2vK.jpg"
         ]
     }
     return pd.DataFrame(datos)
@@ -91,7 +91,7 @@ df = cargar_datos()
 # --- INTERFAZ DE USUARIO ---
 
 st.title("🎬 Buscador de Películas Mejor Calificadas")
-st.markdown("**¡Guía de bolsillo para Cinéfilos!**. Encuentra las mejores películas filtrando por **Año** o por **Director**. Los resultados se mostrarán ordenados por su calificación.")
+st.markdown("**¡Guía de bolsillo para cinéfilos!** Encuentra las mejores películas filtrando por **Año** o por **Director**. Los resultados se mostrarán ordenados por su calificación.")
 st.divider()
 
 # --- CONTROLES DE BÚSQUEDA CENTRALES ---
@@ -106,8 +106,11 @@ with col_radio:
         ("Por Año", "Por Director")
     )
 
+# Variable para identificar si el usuario ya hizo una búsqueda
+hay_seleccion = False
+
 with col_filtro:
-    # Lógica de filtrado basada en la selección (sin selecciones por defecto)
+    # Lógica de filtrado basada en la selección (sin selecciones por defecto y mostrando vacío inicialmente)
     if opcion_busqueda == "Por Año":
         # Obtener lista de años únicos ordenados de mayor a menor
         lista_anos = sorted(df["Año"].dropna().unique(), reverse=True)
@@ -122,9 +125,10 @@ with col_filtro:
         if anos_seleccionados:
             resultados = df[df["Año"].isin(anos_seleccionados)]
             criterio_mostrado = "los años seleccionados"
+            hay_seleccion = True
         else:
-            resultados = df 
-            criterio_mostrado = "todos los años (sin filtro)"
+            resultados = pd.DataFrame(columns=df.columns) # DataFrame vacío
+            criterio_mostrado = "esperando tu búsqueda..."
     
     elif opcion_busqueda == "Por Director":
         # Obtener lista de directores únicos ordenados alfabéticamente
@@ -140,9 +144,10 @@ with col_filtro:
         if directores_seleccionados:
             resultados = df[df["Director"].isin(directores_seleccionados)]
             criterio_mostrado = "los directores seleccionados"
+            hay_seleccion = True
         else:
-            resultados = df
-            criterio_mostrado = "todos los directores (sin filtro)"
+            resultados = pd.DataFrame(columns=df.columns) # DataFrame vacío
+            criterio_mostrado = "esperando tu búsqueda..."
 
 st.divider()
 
@@ -153,7 +158,7 @@ resultados_ordenados = resultados.sort_values(by="Calificación", ascending=Fals
 
 st.subheader(f"Resultados para {criterio_mostrado}")
 
-# Verificar si hay resultados
+# Verificar si hay resultados o si apenas entramos a la app
 if not resultados_ordenados.empty:
     # Mostrar métricas rápidas
     col1, col2 = st.columns(2)
@@ -234,8 +239,12 @@ if not resultados_ordenados.empty:
             
         st.write("---") 
 else:
-    st.info("No se encontraron películas para los criterios seleccionados.")
+    # Mensajes amigables dependiendo de si no se ha buscado o si no se encontró nada
+    if not hay_seleccion:
+        st.info("👆 Por favor, selecciona un Año o un Director en el buscador de arriba para comenzar a ver las películas.")
+    else:
+        st.warning("No se encontraron películas para los criterios seleccionados.")
 
 # Nota al pie
 st.markdown("---")
-st.caption("Desarrollado por Lizcort asístido con IA.")
+st.caption("Desarrollado por Lizcort asistido con IA.")
