@@ -91,7 +91,7 @@ df = cargar_datos()
 # --- INTERFAZ DE USUARIO ---
 
 st.title("🎬 Buscador de Películas Mejor Calificadas")
-st.markdown("**¡Guía de bolsillo para Cinéfilos!**. Encuentra las mejores películas filtrando por **Año** o por **Director**. Los resultados se mostrarán ordenados por su calificación y la vista se adapta a tu pantalla.")
+st.markdown("**¡Guía de bolsillo para Cinéfilos!**. Encuentra las mejores películas filtrando por **Año** o por **Director**. Los resultados se mostrarán ordenados por su calificación.")
 st.divider()
 
 # --- CONTROLES DE BÚSQUEDA CENTRALES ---
