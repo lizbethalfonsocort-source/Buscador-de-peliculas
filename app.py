@@ -54,52 +54,48 @@ def cargar_datos():
         {"Título": "Kill Bill: Volumen 1", "Año": 2003, "Director": "Quentin Tarantino", "Calificación": 8.2, "Género": "Acción/Crimen", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BNzM3NDFhYTAtYmU5Mi00NGRmLTljYjgtMDkyODQ4MjNkMGY2XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_FMjpg_UX1000_.jpg"}
     ]
 
-    # 2. Filmografía completa (sin afiche asignado, se generará dinámicamente)
+    # 2. Filmografía completa (con afiches agregados para la mayoría, algunos vacíos intencionalmente para mostrar el reemplazo)
     filmografias_completas = [
         # === QUENTIN TARANTINO ===
-        {"Título": "Reservoir Dogs", "Año": 1992, "Director": "Quentin Tarantino", "Calificación": 8.3, "Género": "Crimen/Suspense"},
-        {"Título": "Jackie Brown", "Año": 1997, "Director": "Quentin Tarantino", "Calificación": 7.5, "Género": "Crimen/Drama"},
-        {"Título": "Kill Bill: Volumen 2", "Año": 2004, "Director": "Quentin Tarantino", "Calificación": 8.0, "Género": "Acción/Crimen"},
-        {"Título": "Death Proof", "Año": 2007, "Director": "Quentin Tarantino", "Calificación": 7.0, "Género": "Acción/Suspense"},
-        {"Título": "Malditos Bastardos", "Año": 2009, "Director": "Quentin Tarantino", "Calificación": 8.3, "Género": "Bélico/Acción"},
-        {"Título": "Los Odiosos Ocho", "Año": 2015, "Director": "Quentin Tarantino", "Calificación": 7.8, "Género": "Western/Misterio"},
-        {"Título": "Érase una vez en Hollywood", "Año": 2019, "Director": "Quentin Tarantino", "Calificación": 7.6, "Género": "Comedia/Drama"},
+        {"Título": "Reservoir Dogs", "Año": 1992, "Director": "Quentin Tarantino", "Calificación": 8.3, "Género": "Crimen/Suspense", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BZmExNmEwYWItYmQzOS00YjA5LTk2MjktZjEyZDE1Y2QxNjA1XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Jackie Brown", "Año": 1997, "Director": "Quentin Tarantino", "Calificación": 7.5, "Género": "Crimen/Drama", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BMTEwMTE1MzktZDViOS00YzE2LWFkYWItZmI2YzVjODQ1NmU5XkEyXkFqcGdeQXVyMTA1NjQyNjM@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Kill Bill: Volumen 2", "Año": 2004, "Director": "Quentin Tarantino", "Calificación": 8.0, "Género": "Acción/Crimen", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BNmFiYmJmN2QtNWQwMi00MzliLWE5YWItZTFhYmRoOUjzNDUxXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Death Proof", "Año": 2007, "Director": "Quentin Tarantino", "Calificación": 7.0, "Género": "Acción/Suspense", "URL_Afiche": ""}, # Intencionalmente vacío para probar el sistema de respaldo
+        {"Título": "Malditos Bastardos", "Año": 2009, "Director": "Quentin Tarantino", "Calificación": 8.3, "Género": "Bélico/Acción", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BOTJiNDEzOWYtMTVjOC00ZjlmLWE0NGMtZmE1OWVmZDQ2OWJhXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Los Odiosos Ocho", "Año": 2015, "Director": "Quentin Tarantino", "Calificación": 7.8, "Género": "Western/Misterio", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BMjA1MTc1NTg5NV5BMl5BanBnXkFtZTgwOTM2MDEzNzE@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Érase una vez en Hollywood", "Año": 2019, "Director": "Quentin Tarantino", "Calificación": 7.6, "Género": "Comedia/Drama", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BOTg4ZTNkZmUtMzNlZi00YmFjLTk1MmUtNmRjNTdmYTg1NGJmXkEyXkFqcGdeQXVyNjg2NjQwMDQ@._V1_FMjpg_UX1000_.jpg"},
         
         # === CHRISTOPHER NOLAN ===
-        {"Título": "Following", "Año": 1998, "Director": "Christopher Nolan", "Calificación": 7.5, "Género": "Misterio/Crimen"},
-        {"Título": "Memento", "Año": 2000, "Director": "Christopher Nolan", "Calificación": 8.4, "Género": "Misterio/Suspense"},
-        {"Título": "Insomnia", "Año": 2002, "Director": "Christopher Nolan", "Calificación": 7.2, "Género": "Misterio/Suspense"},
-        {"Título": "Batman Begins", "Año": 2005, "Director": "Christopher Nolan", "Calificación": 8.2, "Género": "Acción/Aventura"},
-        {"Título": "El Truco Final (El Prestigio)", "Año": 2006, "Director": "Christopher Nolan", "Calificación": 8.5, "Género": "Drama/Misterio"},
-        {"Título": "El Caballero Oscuro: La Leyenda Renace", "Año": 2012, "Director": "Christopher Nolan", "Calificación": 8.4, "Género": "Acción/Suspense"},
-        {"Título": "Dunkerque", "Año": 2017, "Director": "Christopher Nolan", "Calificación": 7.8, "Género": "Bélico/Acción"},
-        {"Título": "Tenet", "Año": 2020, "Director": "Christopher Nolan", "Calificación": 7.3, "Género": "Ciencia Ficción/Acción"},
+        {"Título": "Following", "Año": 1998, "Director": "Christopher Nolan", "Calificación": 7.5, "Género": "Misterio/Crimen", "URL_Afiche": ""}, # Intencionalmente vacío para probar el sistema de respaldo
+        {"Título": "Memento", "Año": 2000, "Director": "Christopher Nolan", "Calificación": 8.4, "Género": "Misterio/Suspense", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BZTcyNjk1MjItOTRjOS00OTk0LWEwZDItZjM4ZDVhMTA5YmZiXkEyXkFqcGdeQXVyMzI5NDcxNjI@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Insomnia", "Año": 2002, "Director": "Christopher Nolan", "Calificación": 7.2, "Género": "Misterio/Suspense", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BMTE1NTE2MDg1OTReQTJeQWpwZ15BbWU4MDI3ODkyMjIx._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Batman Begins", "Año": 2005, "Director": "Christopher Nolan", "Calificación": 8.2, "Género": "Acción/Aventura", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BOTY4YjI2N2MtYmFlMC00ZjcyLTg3YjEtMDQyM2ZjMzE5NDA4XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "El Truco Final (El Prestigio)", "Año": 2006, "Director": "Christopher Nolan", "Calificación": 8.5, "Género": "Drama/Misterio", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BMjA4NDI0MTIxNV5BMl5BanBnXkFtZTYwNTM0MzY2._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "El Caballero Oscuro: La Leyenda Renace", "Año": 2012, "Director": "Christopher Nolan", "Calificación": 8.4, "Género": "Acción/Suspense", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BMTk4ODQzNDY3Ml5BMl5BanBnXkFtZTcwODA0NTM4Nw@@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Dunkerque", "Año": 2017, "Director": "Christopher Nolan", "Calificación": 7.8, "Género": "Bélico/Acción", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BN2YyZjQ0NTEtNzU5MS00NGZkLTg0MTEtYzJmMWY3MWIyYmRkXkEyXkFqcGdeQXVyNDg4NjY5OTQ@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Tenet", "Año": 2020, "Director": "Christopher Nolan", "Calificación": 7.3, "Género": "Ciencia Ficción/Acción", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BYzg0NGM2NjAtNmIxOC00MDJmLTg5ZmYtYzM0MTE4NWE2NzlhXkEyXkFqcGdeQXVyMTA4NjE0NjEy._V1_FMjpg_UX1000_.jpg"},
 
         # === DENIS VILLENEUVE ===
-        {"Título": "Incendies", "Año": 2010, "Director": "Denis Villeneuve", "Calificación": 8.3, "Género": "Drama/Guerra"},
-        {"Título": "Prisioneros", "Año": 2013, "Director": "Denis Villeneuve", "Calificación": 8.1, "Género": "Crimen/Drama"},
-        {"Título": "Enemy", "Año": 2013, "Director": "Denis Villeneuve", "Calificación": 6.9, "Género": "Misterio/Suspense"},
-        {"Título": "Sicario", "Año": 2015, "Director": "Denis Villeneuve", "Calificación": 7.6, "Género": "Acción/Crimen"},
-        {"Título": "La Llegada (Arrival)", "Año": 2016, "Director": "Denis Villeneuve", "Calificación": 7.9, "Género": "Ciencia Ficción/Drama"},
-        {"Título": "Blade Runner 2049", "Año": 2017, "Director": "Denis Villeneuve", "Calificación": 8.0, "Género": "Ciencia Ficción/Misterio"},
-        {"Título": "Dune", "Año": 2021, "Director": "Denis Villeneuve", "Calificación": 8.0, "Género": "Ciencia Ficción/Aventura"},
+        {"Título": "Incendies", "Año": 2010, "Director": "Denis Villeneuve", "Calificación": 8.3, "Género": "Drama/Guerra", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BMWE3MGYzZjktY2Q5Mi00Y2NiLWIyYWUtMmIyNzA3YmZlMGFhXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Prisioneros", "Año": 2013, "Director": "Denis Villeneuve", "Calificación": 8.1, "Género": "Crimen/Drama", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BMTg0NTIzMzQ1NV5BMl5BanBnXkFtZTgwNTU5NTE2MDE@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Enemy", "Año": 2013, "Director": "Denis Villeneuve", "Calificación": 6.9, "Género": "Misterio/Suspense", "URL_Afiche": ""}, # Intencionalmente vacío para probar el sistema de respaldo
+        {"Título": "Sicario", "Año": 2015, "Director": "Denis Villeneuve", "Calificación": 7.6, "Género": "Acción/Crimen", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BMjA5NjM3NTk1M15BMl5BanBnXkFtZTgwMDUzMzQ1NjE@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "La Llegada (Arrival)", "Año": 2016, "Director": "Denis Villeneuve", "Calificación": 7.9, "Género": "Ciencia Ficción/Drama", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BMTExMzU0ODcxNDheQTJeQWpwZ15BbWU4MDE1OTI4MzAy._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Blade Runner 2049", "Año": 2017, "Director": "Denis Villeneuve", "Calificación": 8.0, "Género": "Ciencia Ficción/Misterio", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BNzA1Njg4NzYxOV5BMl5BanBnXkFtZTgwODk5NjU3MzI@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Dune", "Año": 2021, "Director": "Denis Villeneuve", "Calificación": 8.0, "Género": "Ciencia Ficción/Aventura", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BN2FjNmEyNWMtYzM0ZS00NjIyLTg5YzYtYThlMGVjNzE1OGViXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_FMjpg_UX1000_.jpg"},
         
         # === MARTIN SCORSESE ===
-        {"Título": "Taxi Driver", "Año": 1976, "Director": "Martin Scorsese", "Calificación": 8.2, "Género": "Crimen/Drama"},
-        {"Título": "Toro Salvaje", "Año": 1980, "Director": "Martin Scorsese", "Calificación": 8.1, "Género": "Biografía/Deporte"},
-        {"Título": "Uno de los nuestros", "Año": 1990, "Director": "Martin Scorsese", "Calificación": 8.7, "Género": "Crimen/Drama"},
-        {"Título": "Casino", "Año": 1995, "Director": "Martin Scorsese", "Calificación": 8.2, "Género": "Crimen/Drama"},
-        {"Título": "Infiltrados", "Año": 2006, "Director": "Martin Scorsese", "Calificación": 8.5, "Género": "Crimen/Drama"},
-        {"Título": "Shutter Island", "Año": 2010, "Director": "Martin Scorsese", "Calificación": 8.2, "Género": "Misterio/Suspense"},
-        {"Título": "El Irlandés", "Año": 2019, "Director": "Martin Scorsese", "Calificación": 7.8, "Género": "Crimen/Drama"},
-        {"Título": "Los asesinos de la luna", "Año": 2023, "Director": "Martin Scorsese", "Calificación": 7.6, "Género": "Crimen/Drama"}
+        {"Título": "Taxi Driver", "Año": 1976, "Director": "Martin Scorsese", "Calificación": 8.2, "Género": "Crimen/Drama", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BM2M1MmVhNDgtNmI0YS00ZDNmLTkyNjctNTJiYTQ2N2NmYzc2XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Toro Salvaje", "Año": 1980, "Director": "Martin Scorsese", "Calificación": 8.1, "Género": "Biografía/Deporte", "URL_Afiche": ""}, # Intencionalmente vacío para probar el sistema de respaldo
+        {"Título": "Uno de los nuestros", "Año": 1990, "Director": "Martin Scorsese", "Calificación": 8.7, "Género": "Crimen/Drama", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BY2NkZjEzMDgtN2RjYy00YzM1LWI4ZmQtMjIwYjFjNmI3ZGEwXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Casino", "Año": 1995, "Director": "Martin Scorsese", "Calificación": 8.2, "Género": "Crimen/Drama", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BMTcxOWYzNDYtYmM4YS00N2NkLTk0NTAtNjg1ODgwZjAxYzI3XkEyXkFqcGdeQXVyNTA4NzY1MzY@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Infiltrados", "Año": 2006, "Director": "Martin Scorsese", "Calificación": 8.5, "Género": "Crimen/Drama", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BMTI1MTY2OTIxNV5BMl5BanBnXkFtZTYwNjQ4NjY3._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Shutter Island", "Año": 2010, "Director": "Martin Scorsese", "Calificación": 8.2, "Género": "Misterio/Suspense", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BYzhiNDkyNzktNTZmYS00ZTBkLTk2MDAtM2U0YjU1MzgxZjgzXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "El Irlandés", "Año": 2019, "Director": "Martin Scorsese", "Calificación": 7.8, "Género": "Crimen/Drama", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BMGUyM2ZiZmUtMWY0OC00ZTQ4LThhMzMtMGRkYTc3ZDZkYmUyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_FMjpg_UX1000_.jpg"},
+        {"Título": "Los asesinos de la luna", "Año": 2023, "Director": "Martin Scorsese", "Calificación": 7.6, "Género": "Crimen/Drama", "URL_Afiche": "https://m.media-amazon.com/images/M/MV5BNjE4YzJjMzUtZGI0Ny00ZDcxLWJmNjEtZTA4Zjk3NWRiNjhkXkEyXkFqcGdeQXVyMDA4NzMyOA@@._V1_FMjpg_UX1000_.jpg"}
     ]
 
-    # Procesar automáticamente imágenes de las películas adicionales usando una imagen generada internamente
-    for p in filmografias_completas:
-        p["URL_Afiche"] = generar_afiche_seguro(p["Título"])
-        
-    # Unir ambas listas
+    # Unir ambas listas (ya no forzamos el placeholder generalizado, dejamos que actúe como un verdadero fallback)
     todas_las_peliculas = peliculas_base + filmografias_completas
     return pd.DataFrame(todas_las_peliculas)
 
@@ -111,6 +107,7 @@ df = cargar_datos()
 st.title("🎬 Buscador de Películas Mejor Calificadas")
 st.markdown("**¡Guía de bolsillo para Cinéfilos!** Encuentra las mejores películas filtrando por **Año** o por **Director** los resultados se mostrarán ordenados por su calificación.")
 st.divider()
+
 # --- CONTROLES DE BÚSQUEDA CENTRALES ---
 st.subheader("🔍 Opciones de Búsqueda")
 
@@ -219,13 +216,17 @@ if not resultados_ordenados.empty:
     for _, fila in resultados_ordenados.iterrows():
         col_img, col_datos = st.columns([1, 4]) 
         
-        # Generar un afiche de respaldo garantizado con el título por si el enlace original se rompe
+        # Generar un afiche de respaldo garantizado con el título por si el enlace original se rompe o está vacío
         afiche_respaldo = generar_afiche_seguro(fila["Título"])
         
+        # Si no hay URL asignada o viene vacía, asignamos directamente la de respaldo para que active el src
+        url_a_mostrar = fila["URL_Afiche"] if pd.notna(fila["URL_Afiche"]) and fila["URL_Afiche"] != "" else afiche_respaldo
+        
         with col_img:
+            # En la etiqueta <img> utilizamos onerror por si el enlace principal falla (es decir, deja de existir en internet)
             st.markdown(f'''
                 <div class="contenedor-afiche">
-                    <img class="afiche-moderno" src="{fila["URL_Afiche"]}" alt="Afiche de {fila["Título"]}" onerror="this.onerror=null; this.src='{afiche_respaldo}';">
+                    <img class="afiche-moderno" src="{url_a_mostrar}" alt="Afiche de {fila["Título"]}" onerror="this.onerror=null; this.src='{afiche_respaldo}';">
                 </div>
             ''', unsafe_allow_html=True)
             
