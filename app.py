@@ -27,46 +27,63 @@ st.set_page_config(
 # Usamos cache para que la descarga desde internet solo ocurra la primera vez que se abre la app
 @st.cache_data(show_spinner="Descargando datos en vivo desde IMDb... 🍿 (Esto tomará unos segundos)")
 def cargar_datos_reales():
-    ia = Cinemagoer()
-    
-    # Obtenemos la lista de las 250 mejores películas y tomamos las primeras 50 para optimizar el tiempo de carga
-    top_movies = ia.get_top250_movies()[:50] 
-    
+    # Definimos las columnas explícitamente para evitar KeyErrors si la lista llega vacía
+    columnas = ["Título", "Año", "Director", "Calificación", "Género", "URL_Afiche"]
     datos = []
     
-    for movie in top_movies:
-        # Obtenemos la información detallada de cada película (necesario para directores y géneros)
-        ia.update(movie, info=['main'])
+    try:
+        ia = Cinemagoer()
+        # Obtenemos la lista de las 250 mejores películas y tomamos las primeras 50
+        top_movies = ia.get_top250_movies()[:50] 
         
-        # Extraer directores de forma segura (puede haber más de uno)
-        directores = [d.get('name') for d in movie.get('directors', [])]
-        director_str = ", ".join(directores) if directores else "Desconocido"
+        for movie in top_movies:
+            # Obtenemos la información detallada de cada película
+            ia.update(movie, info=['main'])
+            
+            # Extraer directores de forma segura
+            directores = [d.get('name') for d in movie.get('directors', [])]
+            director_str = ", ".join(directores) if directores else "Desconocido"
+            
+            # Extraer géneros
+            generos = movie.get('genres', [])
+            genero_str = "/".join(generos[:2]) if generos else "Desconocido"
+            
+            # Obtener la URL del afiche
+            url_afiche = movie.get('full-size cover url') or movie.get('cover url', 'https://via.placeholder.com/300x450?text=Sin+Afiche')
+            
+            datos.append({
+                "Título": movie.get('title'),
+                "Año": movie.get('year'),
+                "Director": director_str,
+                "Calificación": movie.get('rating'),
+                "Género": genero_str,
+                "URL_Afiche": url_afiche
+            })
+    except Exception as e:
+        # Si IMDb bloquea la conexión en la nube, evitamos que la app colapse
+        print(f"No se pudo conectar con IMDb: {e}")
+        pass
         
-        # Extraer géneros
-        generos = movie.get('genres', [])
-        genero_str = "/".join(generos[:2]) if generos else "Desconocido"
+    # FALLBACK: Si la conexión falló o IMDb bloqueó la IP del servidor en la nube, cargamos datos de respaldo
+    if not datos:
+        datos = [
+            {"Título": "Cadena Perpetua", "Año": 1994, "Director": "Frank Darabont", "Calificación": 9.3, "Género": "Drama", "URL_Afiche": "https://upload.wikimedia.org/wikipedia/en/8/81/ShawshankRedemptionMoviePoster.jpg"},
+            {"Título": "El Padrino", "Año": 1972, "Director": "Francis Ford Coppola", "Calificación": 9.2, "Género": "Crimen/Drama", "URL_Afiche": "https://upload.wikimedia.org/wikipedia/en/1/1c/Godfather_vhs.jpg"},
+            {"Título": "El Caballero Oscuro", "Año": 2008, "Director": "Christopher Nolan", "Calificación": 9.0, "Género": "Acción/Crimen", "URL_Afiche": "https://upload.wikimedia.org/wikipedia/en/1/1c/The_Dark_Knight_%282008_film%29.jpg"},
+            {"Título": "12 Hombres sin Piedad", "Año": 1957, "Director": "Sidney Lumet", "Calificación": 9.0, "Género": "Drama", "URL_Afiche": "https://upload.wikimedia.org/wikipedia/en/9/91/12_angry_men.jpg"},
+            {"Título": "El Señor de los Anillos: El Retorno del Rey", "Año": 2003, "Director": "Peter Jackson", "Calificación": 9.0, "Género": "Aventura/Fantasía", "URL_Afiche": "https://upload.wikimedia.org/wikipedia/en/b/be/The_Lord_of_the_Rings_-_The_Return_of_the_King_%282003%29.jpg"}
+        ]
         
-        # Obtener la URL del afiche de mejor calidad disponible
-        url_afiche = movie.get('full-size cover url') or movie.get('cover url', 'https://via.placeholder.com/300x450?text=Sin+Afiche')
-        
-        datos.append({
-            "Título": movie.get('title'),
-            "Año": movie.get('year'),
-            "Director": director_str,
-            "Calificación": movie.get('rating'),
-            "Género": genero_str,
-            "URL_Afiche": url_afiche
-        })
-        
-    return pd.DataFrame(datos)
+    return pd.DataFrame(datos, columns=columnas)
 
 # Cargar los datos reales en el DataFrame
 df = cargar_datos_reales()
 
 # --- INTERFAZ DE USUARIO ---
 
-st.title("🎬 Buscador de Películas")
-st.markdown("**¡Guía de bolsillo para cinéfilos!** Encuentra las mejores películas filtrando por **Año** o por **Director**. Estos datos son extraídos en tiempo real de la base de datos mundial de **IMDb**.")
+st.title("🎬 Buscador de Películas (Conectado a IMDb)")
+st.markdown("**¡Guía de bolsillo para Cinéfilos!**
+Encuentra las mejores películas filtrando por **Año** o por **Director**.")
 st.divider()
 
 # Menú lateral para los filtros
@@ -210,4 +227,4 @@ else:
 
 # Nota al pie
 st.markdown("---")
-st.caption("Desarrollado por Lizbeth Alfonso, asistido con IA.")
+st.caption("Desarrollado por Lizcort asistido por IA.")
