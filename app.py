@@ -1,5 +1,18 @@
 import streamlit as st
 import pandas as pd
+
+# --- PARCHE PARA COMPATIBILIDAD CON PYTHON 3.14 ---
+import pkgutil
+if not hasattr(pkgutil, 'find_loader'):
+    import importlib.util
+    def find_loader(fullname):
+        try:
+            spec = importlib.util.find_spec(fullname)
+            return spec.loader if spec else None
+        except Exception:
+            return None
+    pkgutil.find_loader = find_loader
+
 from imdb import Cinemagoer
 
 # Configuración inicial de la página
@@ -52,8 +65,8 @@ df = cargar_datos_reales()
 
 # --- INTERFAZ DE USUARIO ---
 
-st.title("🎬 Buscador de Películas (Conectado a IMDb)")
-st.markdown("Encuentra las mejores películas filtrando por **Año** o por **Director**. Estos datos son extraídos en tiempo real de la base de datos mundial de **IMDb**.")
+st.title("🎬 Buscador de Películas")
+st.markdown("**¡Guía de bolsillo para cinéfilos!** Encuentra las mejores películas filtrando por **Año** o por **Director**. Estos datos son extraídos en tiempo real de la base de datos mundial de **IMDb**.")
 st.divider()
 
 # Menú lateral para los filtros
@@ -197,4 +210,4 @@ else:
 
 # Nota al pie
 st.markdown("---")
-st.caption("Desarrollado por Lizbeth Alfonso asistido por IA.")
+st.caption("Desarrollado por Lizbeth Alfonso, asistido con IA.")
